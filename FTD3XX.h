@@ -1,6 +1,6 @@
 /*++
 
-Copyright © 2016 Future Technology Devices International Limited
+Copyright ï¿½ 2016 Future Technology Devices International Limited
 
 THIS SOFTWARE IS PROVIDED BY FUTURE TECHNOLOGY DEVICES INTERNATIONAL LIMITED "AS IS"
 AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
@@ -42,8 +42,6 @@ kernel & user mode
 #define __FTD3XX_H__
 
 #include <windows.h>
-
-
 
 //
 // Standard Descriptor Types
