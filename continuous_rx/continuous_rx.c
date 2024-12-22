@@ -3,7 +3,7 @@
 #include <conio.h>          // For getch()
 #include "../FTD3xx.h"         // FTDI D3XX API header (include path required)
 
-#define BUFFER_SIZE 8192    // Define the buffer size (adjust as needed)
+#define BUFFER_SIZE 1000000    // Define the buffer size (adjust as needed)
 static char* str_ftStatus[] = {
     "FT_OK",
     "FT_INVALID_HANDLE",
@@ -110,7 +110,7 @@ BOOL Receiver_test(void) {
     // Close device
     ftStatus = FT_Close(ftHandle);
     printf("Close: %s\n",ftStatus ? "ERROR" : "OK");
-    printf("Checksum: %d\n",checksum);
+    printf("Checksum: %x\n",checksum);
     return TRUE;
 }
 
