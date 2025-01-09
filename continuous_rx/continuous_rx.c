@@ -54,17 +54,14 @@ BOOL Receiver_test(void) {
     UCHAR ucPipeId = 0x02;
     ULONG ulTimeoutInMs = 10000;
 
-    //memcpy(&DeviceGUID[0], &GUID_DEVINTERFACE_FOR_D3XX, sizeof(GUID));
-    //ftStatus = FT_Create(&DeviceGUID[0], FT_OPEN_BY_GUID, &ftHandle);
-    ftStatus = FT_Create("000000000001", FT_OPEN_BY_SERIAL_NUMBER, &ftHandle); 
+    ftStatus = FT_Create("ByttEHH8yTnWTeO", FT_OPEN_BY_SERIAL_NUMBER, &ftHandle); 
     printf("Device Creation: %s\n",ftStatus ? "ERROR" : "OK");
     // Prepare data to sent
     for (ULONG i = 0; i < BUFFER_SIZE / 4; i++) {
         acWriteBuf[i] = i % 32;
         checksum += acWriteBuf[i];
-        //printf("i = %d, checksum = %d\n",i,checksum);
     }
-
+   
     // Initialize resource for overlapped parameter
     ftStatus = FT_InitializeOverlapped(ftHandle, &vOverlapped);
     printf("InitializeOverlapped: %s\n",ftStatus ? "ERROR" : "OK");
@@ -72,7 +69,7 @@ BOOL Receiver_test(void) {
     ftStatus = FT_SetPipeTimeout(ftHandle, ucPipeId, ulTimeoutInMs);
     printf("SetPipeTimeout: %s\n",ftStatus ? "ERROR" : "OK");
 
-    // Wait for anykey press
+    // Wait for key press
     getch();
 
     // Write asynchronously
@@ -84,7 +81,8 @@ BOOL Receiver_test(void) {
         do {
         // will return FT_IO_INCOMPLETE if not yet finish
         ftStatus = FT_GetOverlappedResult(ftHandle, &vOverlapped, &ulBytesWritten, FALSE);
-        printf("%s\n",ftStatus ? str_ftStatus[ftStatus] : "GetOverlappedResult: OK");
+        if(ftStatus != FT_IO_INCOMPLETE)
+            printf("%s\n",ftStatus ? str_ftStatus[ftStatus] : "GetOverlappedResult: OK");
 
         if (ftStatus == FT_IO_INCOMPLETE) {
             continue;
@@ -123,7 +121,7 @@ int main(){
     DWORD lib3 = (library_version >> 8) & 0xFF;
     DWORD lib4 = library_version & 0xFF;
 
-    printf("FTDI D3XX Library Version: %d.%d.%d.%d\n", lib1, lib2, lib3, lib4);
+    printf("FTDI D3XX Library Version: %x.%x.%x.%x\n", lib1, lib2, lib3, lib4);
     
     DWORD numDevs = 0;   
     ftdefStatus = FT_CreateDeviceInfoList(&numDevs);
